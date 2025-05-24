@@ -5,7 +5,7 @@ Widget _defaultHome = DashboardPage();
 void main() {
   runApp(const MyApp());
 }
-
+final String appName = 'Grocery App';
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
