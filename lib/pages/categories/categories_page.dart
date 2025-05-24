@@ -20,7 +20,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
     '#b7dff5',
     '#836af6',
     '#d73b77',
+    '#d73b77',
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
