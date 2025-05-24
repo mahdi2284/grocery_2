@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:grocery/api/api_services.dart';
 import 'package:grocery/models/category_model.dart';
 import 'package:grocery/pages/categories/category_item_card_widget.dart';
 
@@ -22,7 +23,28 @@ class _CategoriesPageState extends State<CategoriesPage> {
   ];
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(height: 20),
+            const Center(
+              child: Text(
+                'Categories',
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: _categoriesList(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget getStaggeredGrid(List<CategoryModel> data) {
@@ -39,11 +61,24 @@ class _CategoriesPageState extends State<CategoriesPage> {
             padding: EdgeInsets.all(10),
             child: CategoryItemCardWidget(
               item: categoeyItem,
-              color: Colors.black
+              color: Colors.black,
             ),
           ),
         );
       }).toList(),
+    );
+  }
+
+  Widget _categoriesList() {
+    return FutureBuilder<List<CategoryModel>?>(
+      future: ApiServices.getCategories(),
+      builder:
+          (BuildContext context, AsyncSnapshot<List<CategoryModel>?> model) {
+            if (model.hasData) {
+              return getStaggeredGrid(model.data!);
+            }
+            return const Center(child: CircularProgressIndicator());
+          },
     );
   }
 }
